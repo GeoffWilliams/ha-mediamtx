@@ -5,7 +5,16 @@ from homeassistant import config_entries
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers import config_validation as cv
 
-from .const import DOMAIN, CONF_SERVICE_URL
+from .const import (
+    DOMAIN, 
+    CONF_SERVICE_URL, 
+    CONF_AUTH_METHOD, 
+    CONF_AUTH_BASIC_USERNAME, 
+    CONF_AUTH_BASIC_PASSWORD,
+    AUTH_METHOD_PASSTHRU,
+    AUTH_METHOD_NONE,
+    AUTH_METHOD_BASIC
+)
 
 
 class MediaMtxConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
@@ -38,7 +47,20 @@ class MediaMtxConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 vol.Required(
                     CONF_SERVICE_URL,
                     default="http://localhost:8889",
-                ): cv.string
+                ): cv.string,
+
+                vol.Required(
+                    CONF_AUTH_METHOD,
+                    default=AUTH_METHOD_NONE,
+                ): vol.In([AUTH_METHOD_NONE, AUTH_METHOD_PASSTHRU, AUTH_METHOD_BASIC]),
+
+                vol.Optional(
+                    CONF_AUTH_BASIC_USERNAME,
+                ): cv.string,
+
+                vol.Optional(
+                    CONF_AUTH_BASIC_PASSWORD,
+                ): cv.string,
             }
         )
 

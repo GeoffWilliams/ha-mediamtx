@@ -78,7 +78,7 @@ async def async_register_mediamtx_proxy(hass: HomeAssistant, entry: ConfigEntry)
             if k in ("Content-Type")
         }
 
-        headers[hdrs.AUTHORIZATION] = downstream_authentication_header(request, entry_data)
+        headers[hdrs.AUTHORIZATION] = await downstream_authentication_header(request, entry_data)
 
         # Read request body, if any
         try:

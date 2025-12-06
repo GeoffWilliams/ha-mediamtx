@@ -5,7 +5,10 @@
         "title": "Configure MediaMTX",
         "description": "Enter the full url and port of your MediaMTX instance.",
         "data": {
-          "service_url": "Service URL (e.g. http://192.168.1.10:8889)"
+          "service_url": "Service URL (e.g. http://192.168.1.10:8889)",
+          "auth_method": "none=no authentication, pass-thru=Authorization header for home assistant, basic=username+password",
+          "auth_basic_username": "username for basic authentication",
+          "auth_basic_password": "password for basic authentication"
         }
       }
     },

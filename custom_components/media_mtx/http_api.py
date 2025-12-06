@@ -13,6 +13,9 @@ from .const import (
 )
 import aiohttp
 import base64
+import logging
+
+_LOGGER = logging.getLogger(__name__)
 
 
 async def async_register_mediamtx_proxy(hass: HomeAssistant, entry: ConfigEntry):
@@ -38,6 +41,7 @@ async def async_register_mediamtx_proxy(hass: HomeAssistant, entry: ConfigEntry)
         return refresh_token.user
     
     async def downstream_authentication_header(request: web.Request, entry_data):
+        _LOGGER.info(entry_data.keys())
         if entry_data[CONF_AUTH_METHOD] == AUTH_METHOD_NONE:
             return ""
         elif entry_data[CONF_AUTH_METHOD] == AUTH_METHOD_PASSTHRU:
@@ -57,8 +61,12 @@ async def async_register_mediamtx_proxy(hass: HomeAssistant, entry: ConfigEntry)
         if hass_user is None:
             return web.json_response({"error": "Unauthorized"}, status=401)
 
-        # Retrieve the configured service URL
+        # Retrieve the configured entry (service URL, etc)
         entry_data = hass.data[DOMAIN].get(entry.entry_id)
+        _LOGGER.error(f"entry: {entry.entry_id}")
+        import json
+        ed = json.dumps(entry_data)
+        _LOGGER.error(f"entry: {ed}")
         if not entry_data:
             return web.json_response(
                 {"error": "Integration not properly initialized"}, status=500

@@ -48,7 +48,7 @@ async def async_register_mediamtx_proxy(hass: HomeAssistant, entry: ConfigEntry)
             return request.get(hdrs.AUTHORIZATION)
         elif entry_data[CONF_AUTH_METHOD] == AUTH_METHOD_BASIC:
             credential = f"{entry_data[CONF_AUTH_BASIC_USERNAME]}:{entry_data[CONF_AUTH_BASIC_PASSWORD]}"
-            b64_credential = base64.b64encode(credential.encode("utf-8"))
+            b64_credential = base64.b64encode(credential.encode("utf-8")).decode('utf-8')
             return f"Basic {b64_credential}"
         else:
             raise(f"unsupported auth method:{entry_data[CONF_AUTH_METHOD]}")
@@ -87,6 +87,7 @@ async def async_register_mediamtx_proxy(hass: HomeAssistant, entry: ConfigEntry)
         }
 
         headers[hdrs.AUTHORIZATION] = await downstream_authentication_header(request, entry_data)
+
 
         # Read request body, if any
         try:
